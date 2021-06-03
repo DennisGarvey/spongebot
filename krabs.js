@@ -7,6 +7,7 @@ const client = new Discord.Client()
 
 client.on('voiceStateUpdate', async function(oldState, newState){
     if(newState.member.id != config.targetUser) {return}
+    if(oldState.channel == null) {return}
     if(oldState.channel.equals(newState.channel)) {return}
 
     //kill switch detection
@@ -33,6 +34,7 @@ client.on('voiceStateUpdate', async function(oldState, newState){
     if(newState.channel!=null){
         let connection = await newState.channel.join()
         let dispatcher = connection.play('./krabs/hello.mp3')
+        console.log("hello")
         
     }
     //if(newState.channel)
