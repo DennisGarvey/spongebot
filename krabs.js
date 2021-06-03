@@ -7,8 +7,8 @@ const client = new Discord.Client()
 
 client.on('voiceStateUpdate', async function(oldState, newState){
     if(newState.member.id != config.targetUser) {return}
-    if(oldState.channel == null) {return}
-    if(oldState.channel.equals(newState.channel)) {return}
+    if(newState.channel == null) {oldState.guild.me.voice.channel.leave(); return}
+    if(newState.channel.equals(oldState.channel)) {return}
 
     //kill switch detection
     roles = newState.guild.me.roles.cache
