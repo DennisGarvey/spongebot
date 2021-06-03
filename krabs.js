@@ -71,6 +71,7 @@ client.on('rateLimit', function(data){
 client.on('ready', async function(){
     console.log("Bot Online")
     await client.user.setStatus('online')
+    console.log(`Targeting: ${config.targetUser}`)
     
 })
 
