@@ -6,7 +6,7 @@ const delay = require('delay')
 const client = new Discord.Client()
 
 client.on('voiceStateUpdate', async function(oldState, newState){
-    if(newState.member.id != config.targetUser) {return}
+    if(newState.member.id != config.targetUsers[newState.guild.id]) {return}
     if(newState.channel == null) {oldState.guild.me.voice.channel.leave(); return}
     if(newState.channel.equals(oldState.channel)) {return}
 
@@ -40,15 +40,20 @@ client.on('voiceStateUpdate', async function(oldState, newState){
     //if(newState.channel)
 })
 
+//auto unserver mute bot
 client.on('voiceStateUpdate', function(oldState, newState){
     if(client.user.id!=newState.member.id) {return}
     if(newState.mute){
         newState.guild.me.voice.setMute(false)
     }
+    if(newState.serverDeaf){
+        newState.guild.me.voice.setDeaf(false)
+    }
 })
 
+//walking sounds
 client.on('guildMemberSpeaking', async function(member, speaking){
-    if(member.id!=config.targetUser) {return}
+    if(member.id!=config.targetUsers[member.guild.id]) {return}
 
     if(speaking==true){
         console.log("speaking")
@@ -71,8 +76,6 @@ client.on('rateLimit', function(data){
 client.on('ready', async function(){
     console.log("Bot Online")
     await client.user.setStatus('online')
-    console.log(`Targeting: ${config.targetUser}`)
-    
 })
 
 client.login(secrets.token)
